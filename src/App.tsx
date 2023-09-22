@@ -1,13 +1,12 @@
-import React from 'react';
-import io from 'socket.io-client'
-import Login from './pages/Login';
+import React from 'react'
+import { Auth } from './pages/Auth'
 
 function App() {
   return (
     <div className="App">
-      <Login />
+      <Auth />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
