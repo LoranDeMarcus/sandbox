@@ -6,7 +6,7 @@ import { renderMultiRoutes } from '@/utils/renderMultiRoutes'
 export const Auth = () => {
   return (
     <Routes>
-      {renderMultiRoutes({ element: <Login />, paths: ['/login', '/register'] })}
+      {renderMultiRoutes({ element: <Login />, paths: ['/', '/login'] })}
       <Route path="/register" element={<Register />} />
     </Routes>
   )

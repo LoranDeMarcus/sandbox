@@ -9,7 +9,10 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
 import { ILoginInputTypes } from './types'
-import { Grid, Link } from '@mui/material'
+import { Grid, InputAdornment, Link } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
+import PersonIcon from '@mui/icons-material/Person'
+import LockIcon from '@mui/icons-material/Lock'
 
 export const Login = () => {
   const { handleSubmit, register } = useForm<ILoginInputTypes>({
@@ -39,6 +42,13 @@ export const Login = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PersonIcon fontSize="small" style={{ color: 'rgba(0, 0, 0, 0.25)' }} />
+                </InputAdornment>
+              ),
+            }}
             margin="normal"
             required
             fullWidth
@@ -49,6 +59,13 @@ export const Login = () => {
             {...register('name')}
           />
           <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockIcon fontSize="small" style={{ color: 'rgba(0, 0, 0, 0.25)' }} />
+                </InputAdornment>
+              ),
+            }}
             margin="normal"
             required
             fullWidth
@@ -71,7 +88,7 @@ export const Login = () => {
             Войти в аккаунт
           </Button>
           <Grid container justifyContent="center">
-            <Link href="#" variant="body2">
+            <Link to="/register" component={RouterLink} color="#bdbdbd" variant="body2">
               Зарегистрироваться
             </Link>
           </Grid>
