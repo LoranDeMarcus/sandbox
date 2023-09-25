@@ -3,31 +3,63 @@ import { formatDistanceToNow } from 'date-fns'
 
 import { IMessageProps } from './types'
 import { ru } from 'date-fns/locale'
-import DoneAllIcon from '@mui/icons-material/DoneAll'
-import * as s from './styles'
+import classNames from 'classnames'
+import { IconRead } from '@/components/IconRead'
 
-export const Message = ({ avatar, message, user, date, isMe }: IMessageProps) => {
+import './styles.scss'
+
+export const Message = ({ avatar, message, user, date, isMe, attachments }: IMessageProps) => {
   const formattedDate = formatDistanceToNow(new Date(date), {
     addSuffix: true,
     locale: ru,
   })
 
-  return (
-    <div className={`${s.rootCommon} ${isMe ? s.rootIsMe : ''}`}>
-      {isMe &&
-        <DoneAllIcon className="absolute left-0" sx={{ fontSize: 'small', color: '#0c8fe4' }} />
-      }
-      <div className="w-8 h-8 mb-6 rounded-full shrink-0">
-        <img className="rounded-full w-8 h-8" src={avatar}
-             alt={`Avatar ${user?.fullName}`} />
-      </div>
-      <div>
+  const renderAttachment = (item: any) => {
+    if (item.ext !== 'webm') {
+      return (
         <div
-          className={`${s.bubbleCommon} ${isMe ? s.bubbleIsMe : ''}`}
-        >
-          <p className={`${isMe ? 'text-black' : 'text-white'}`}>{message}</p>
+          key={item._id}
+          // onClick={() => setPreviewImage(item.url)}
+          className="message__attachments-item">
+          <div className="message__attachments-item-overlay">
+            {/*<Icon type="eye" style={{ color: 'white', fontSize: 18 }} />*/}
+          </div>
+
+          <img src={item.url} alt={item.filename} />
         </div>
-        <span className="text-xs opacity-40">{formattedDate}</span>
+      )
+    } else {
+      // return <MessageAudio key={item._id} audioSrc={item.url} />
+    }
+  }
+
+  return (
+    <div className={classNames('message', {
+      'message--isme': isMe,
+      // 'message--is-typing': isTyping,
+      // 'message--is-audio': isAudio(attachments),
+      // 'message--image': !isAudio(attachments) && attachments && attachments.length === 1 && !text,
+    })}>
+      <div className="message__content">
+        {isMe &&
+          <IconRead isMe={isMe} isRead={true} />
+        }
+        <div className="message__avatar">
+          <img className="avatar" src={avatar} alt={`Avatar ${user?.fullName}`} />
+        </div>
+        <div className="message__info">
+          <div className="message__bubble">
+            <p className="message__text">{message}</p>
+          </div>
+
+          {attachments && (
+            <div className="message__attachments">
+              {attachments.map(item => renderAttachment(item))}
+            </div>
+          )}
+
+          <span className="message__date">{formattedDate}</span>
+        </div>
       </div>
     </div>
   )
