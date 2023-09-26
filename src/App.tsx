@@ -5,12 +5,13 @@ import { Auth } from '@/pages/Auth'
 import { Chat } from '@/pages/Chat'
 
 import './index.css'
+import { renderMultiRoutes } from '@/utils/renderMultiRoutes'
 
 function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/login" element={<Auth />} />
+        <Route path="/*" element={<Auth />} />
         <Route path="/chat" element={<Chat />} />
       </Routes>
     </div>
