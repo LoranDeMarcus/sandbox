@@ -8,11 +8,12 @@ import TextField from '@mui/material/TextField'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import Button from '@mui/material/Button'
-import { ILoginInputTypes } from './types'
 import { Grid, InputAdornment, Link } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import PersonIcon from '@mui/icons-material/Person'
 import LockIcon from '@mui/icons-material/Lock'
+
+import { ILoginInputTypes } from './types'
 
 export const Login = () => {
   const { handleSubmit, register } = useForm<ILoginInputTypes>({
@@ -40,7 +41,7 @@ export const Login = () => {
         <Typography component="h1" variant="h5">
           Войти в аккаунт
         </Typography>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+        <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
           <TextField
             InputProps={{
               startAdornment: (
@@ -49,13 +50,13 @@ export const Login = () => {
                 </InputAdornment>
               ),
             }}
-            margin="normal"
-            required
+            autoFocus
             fullWidth
             id="name"
-            type="name"
             label="Имя"
-            autoFocus
+            margin="normal"
+            required
+            type="name"
             {...register('name')}
           />
           <TextField
@@ -66,29 +67,23 @@ export const Login = () => {
                 </InputAdornment>
               ),
             }}
+            fullWidth
+            id="password"
+            label="Пароль"
             margin="normal"
             required
-            fullWidth
-            label="Пароль"
             type="password"
-            id="password"
             {...register('password')}
           />
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={<Checkbox color="primary" value="remember" />}
             label="Запомнить меня"
           />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            size="large"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button fullWidth size="large" sx={{ mt: 3, mb: 2 }} type="submit" variant="contained">
             Войти в аккаунт
           </Button>
           <Grid container justifyContent="center">
-            <Link to="/register" component={RouterLink} color="#bdbdbd" variant="body2">
+            <Link color="#bdbdbd" component={RouterLink} to="/register" variant="body2">
               Зарегистрироваться
             </Link>
           </Grid>

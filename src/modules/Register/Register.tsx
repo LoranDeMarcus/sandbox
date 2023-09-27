@@ -7,11 +7,12 @@ import Typography from '@mui/material/Typography'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import { Grid, InputAdornment, Link } from '@mui/material'
-import { IRegisterInputTypes } from '@/modules/Register/types'
 import { Link as RouterLink } from 'react-router-dom'
 import MailIcon from '@mui/icons-material/Mail'
 import PersonIcon from '@mui/icons-material/Person'
 import LockIcon from '@mui/icons-material/Lock'
+
+import { IRegisterInputTypes } from '@/modules/Register/types'
 import { RegisterSuccess } from '@/modules/Register/RegisterSuccess'
 
 export const Register = () => {
@@ -38,18 +39,18 @@ export const Register = () => {
           alignItems: 'center',
         }}
       >
-        <Typography component="h1" variant="h5" mb={1}>
+        <Typography component="h1" mb={1} variant="h5">
           Регистрация
         </Typography>
         <Typography
           component="p"
-          variant="body2"
           sx={{ marginBottom: 5, color: 'rgba(0, 0, 0, 0.25)' }}
+          variant="body2"
         >
           Для входа в чат, вам нужно зарегистрироваться
         </Typography>
-        {!isSuccess ? <RegisterSuccess /> : (
-          <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+        {isSuccess ? (
+          <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
             <TextField
               InputProps={{
                 startAdornment: (
@@ -58,13 +59,13 @@ export const Register = () => {
                   </InputAdornment>
                 ),
               }}
-              margin="normal"
-              required
+              autoComplete="email"
+              autoFocus
               fullWidth
               id="email"
               label="Email"
-              autoComplete="email"
-              autoFocus
+              margin="normal"
+              required
               {...register('email')}
             />
             <TextField
@@ -75,12 +76,12 @@ export const Register = () => {
                   </InputAdornment>
                 ),
               }}
-              margin="normal"
-              required
               fullWidth
               id="name"
-              type="name"
               label="Ваше имя"
+              margin="normal"
+              required
+              type="name"
               {...register('name')}
             />
             <TextField
@@ -91,12 +92,12 @@ export const Register = () => {
                   </InputAdornment>
                 ),
               }}
+              fullWidth
+              id="password"
+              label="Пароль"
               margin="normal"
               required
-              fullWidth
-              label="Пароль"
               type="password"
-              id="password"
               {...register('password')}
             />
             <TextField
@@ -107,29 +108,25 @@ export const Register = () => {
                   </InputAdornment>
                 ),
               }}
+              fullWidth
+              id="repeatPassword"
+              label="Повторить пароль"
               margin="normal"
               required
-              fullWidth
-              label="Повторить пароль"
               type="password"
-              id="repeatPassword"
               {...register('repeatPassword')}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              size="large"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button fullWidth size="large" sx={{ mt: 3, mb: 2 }} type="submit" variant="contained">
               Зарегистрироваться
             </Button>
             <Grid container justifyContent="center">
-              <Link to="/login" component={RouterLink} color="#bdbdbd" variant="body2">
+              <Link color="#bdbdbd" component={RouterLink} to="/login" variant="body2">
                 Войти в аккаунт
               </Link>
             </Grid>
           </Box>
+        ) : (
+          <RegisterSuccess />
         )}
       </Box>
     </Container>
