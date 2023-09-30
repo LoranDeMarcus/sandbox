@@ -6,7 +6,8 @@
     "start": "craco start && postcss src/index.css -o public/app.css",
     "build": "craco build",
     "test": "craco test",
-    "eject": "craco eject"
+    "eject": "craco eject",
+    "lint:fix": "prettier --write ./**/*.ts? && eslint --ext=.tsx,.ts . --fix --quiet"
   },
   "eslintConfig": {
     "extends": [
@@ -28,6 +29,7 @@
   },
   "dependencies": {
     "@emoji-mart/data": "^1.1.2",
+    "@emoji-mart/react": "^1.1.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@hookform/resolvers": "^3.3.1",
@@ -42,11 +44,13 @@
     "@types/react-dom": "^18.0.0",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
+    "emoji-mart": "^5.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.46.2",
     "react-router-dom": "^6.16.0",
     "react-scripts": "5.0.1",
+    "react-string-replace": "^1.1.1",
     "reset-css": "^5.0.2",
     "sass": "^1.68.0",
     "socket.io-client": "^4.7.2",

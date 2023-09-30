@@ -14,4 +14,5 @@ export interface IMessageProps {
   user: IUser
   isMe?: boolean
   attachments?: Array<IAttachment>
+  isTyping?: boolean
 }

@@ -33,6 +33,7 @@
   }
 
   &__bubble {
+    width: fit-content;
     background: $blue;
     box-shadow: 0 5px 5px rgba(54, 116, 255, 0.196733);
     border-radius: 12px 12px 12px 0;

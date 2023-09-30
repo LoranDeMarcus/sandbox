@@ -1,27 +1,51 @@
 import React, { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import Container from '@mui/material/Container'
-import CssBaseline from '@mui/material/CssBaseline'
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
-import { Grid, InputAdornment, Link } from '@mui/material'
+import {
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
 import MailIcon from '@mui/icons-material/Mail'
 import PersonIcon from '@mui/icons-material/Person'
 import LockIcon from '@mui/icons-material/Lock'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
-import { IRegisterInputTypes } from '@/modules/Register/types'
-import { RegisterSuccess } from '@/modules/Register/RegisterSuccess'
+import { RegisterValidationSchema } from '@/utils/validations/registerValidation'
+
+import { IRegisterInputTypes } from './types'
+import { RegisterSuccess } from './RegisterSuccess'
 
 export const Register = () => {
   const [isSuccess, setIsSuccess] = useState(false)
-  const { handleSubmit, register } = useForm<IRegisterInputTypes>({
+  const [isVisiblePassword, setIsVisiblePassword] = useState(false)
+  const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] = useState(false)
+
+  const handleClickShowPassword = () => setIsVisiblePassword((prevState) => !prevState)
+  const handleClickShowConfirmPassword = () =>
+    setIsVisibleConfirmPassword((prevState) => !prevState)
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<IRegisterInputTypes>({
     defaultValues: {
+      email: '',
       name: '',
       password: '',
+      confirmPassword: '',
     },
+    resolver: zodResolver(RegisterValidationSchema),
+    reValidateMode: 'onBlur',
   })
 
   const onSubmit: SubmitHandler<IRegisterInputTypes> = (data) => {
@@ -50,6 +74,8 @@ export const Register = () => {
           Для входа в чат, вам нужно зарегистрироваться
         </Typography>
         {isSuccess ? (
+          <RegisterSuccess />
+        ) : (
           <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={handleSubmit(onSubmit)}>
             <TextField
               InputProps={{
@@ -61,7 +87,9 @@ export const Register = () => {
               }}
               autoComplete="email"
               autoFocus
+              error={Boolean(errors.email?.message)}
               fullWidth
+              helperText={errors?.email?.message}
               id="email"
               label="Email"
               margin="normal"
@@ -76,9 +104,11 @@ export const Register = () => {
                   </InputAdornment>
                 ),
               }}
+              error={Boolean(errors.name?.message)}
               fullWidth
+              helperText={errors?.name?.message}
               id="name"
-              label="Ваше имя"
+              label="Your name"
               margin="normal"
               required
               type="name"
@@ -91,13 +121,26 @@ export const Register = () => {
                     <LockIcon fontSize="small" scale="s" style={{ color: 'rgba(0, 0, 0, 0.25)' }} />
                   </InputAdornment>
                 ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      edge="end"
+                      onClick={handleClickShowPassword}
+                    >
+                      {isVisiblePassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
+              error={Boolean(errors.password?.message)}
               fullWidth
+              helperText={errors?.password?.message}
               id="password"
-              label="Пароль"
+              label="Password"
               margin="normal"
               required
-              type="password"
+              type={isVisiblePassword ? 'text' : 'password'}
               {...register('password')}
             />
             <TextField
@@ -107,14 +150,27 @@ export const Register = () => {
                     <LockIcon fontSize="small" scale="s" style={{ color: 'rgba(0, 0, 0, 0.25)' }} />
                   </InputAdornment>
                 ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      edge="end"
+                      onClick={handleClickShowConfirmPassword}
+                    >
+                      {isVisibleConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
+              error={Boolean(errors.confirmPassword?.message)}
               fullWidth
-              id="repeatPassword"
-              label="Повторить пароль"
+              helperText={errors?.confirmPassword?.message}
+              id="confirmPassword"
+              label="Confirm password"
               margin="normal"
               required
-              type="password"
-              {...register('repeatPassword')}
+              type={isVisibleConfirmPassword ? 'text' : 'password'}
+              {...register('confirmPassword')}
             />
             <Button fullWidth size="large" sx={{ mt: 3, mb: 2 }} type="submit" variant="contained">
               Зарегистрироваться
@@ -125,8 +181,6 @@ export const Register = () => {
               </Link>
             </Grid>
           </Box>
-        ) : (
-          <RegisterSuccess />
         )}
       </Box>
     </Container>

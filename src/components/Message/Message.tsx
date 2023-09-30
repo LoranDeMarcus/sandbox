@@ -1,14 +1,26 @@
 import React from 'react'
 import { formatDistanceToNow } from 'date-fns'
-
-import { IMessageProps } from './types'
 import { ru } from 'date-fns/locale'
 import classNames from 'classnames'
+import data from '@emoji-mart/data'
+import EmojiPicker from '@emoji-mart/react'
+import reactStringReplace from 'react-string-replace'
+
 import { IconRead } from '@/components/IconRead'
+
+import { IMessageProps } from './types'
 
 import './styles.scss'
 
-export const Message = ({ avatar, message, user, date, isMe, attachments }: IMessageProps) => {
+export const Message = ({
+  avatar,
+  message,
+  user,
+  date,
+  isMe,
+  attachments,
+  isTyping,
+}: IMessageProps) => {
   const formattedDate = formatDistanceToNow(new Date(date), {
     addSuffix: true,
     locale: ru,
@@ -18,43 +30,60 @@ export const Message = ({ avatar, message, user, date, isMe, attachments }: IMes
     if (item.ext !== 'webm') {
       return (
         <div
+          className="message__attachments-item"
           key={item._id}
           // onClick={() => setPreviewImage(item.url)}
-          className="message__attachments-item">
+        >
           <div className="message__attachments-item-overlay">
-            {/*<Icon type="eye" style={{ color: 'white', fontSize: 18 }} />*/}
+            {/* <Icon type="eye" style={{ color: 'white', fontSize: 18 }} /> */}
           </div>
 
-          <img src={item.url} alt={item.filename} />
+          <img alt={item.filename} src={item.url} />
         </div>
       )
-    } else {
-      // return <MessageAudio key={item._id} audioSrc={item.url} />
     }
+    return null
+    // return <MessageAudio key={item._id} audioSrc={item.url} />
   }
 
   return (
-    <div className={classNames('message', {
-      'message--isme': isMe,
-      // 'message--is-typing': isTyping,
-      // 'message--is-audio': isAudio(attachments),
-      // 'message--image': !isAudio(attachments) && attachments && attachments.length === 1 && !text,
-    })}>
+    <div
+      className={classNames('message', {
+        'message--isme': isMe,
+        'message--is-typing': isTyping,
+        // 'message--is-audio': isAudio(attachments),
+        // 'message--image': !isAudio(attachments) && attachments && attachments.length === 1 && !text,
+      })}
+    >
       <div className="message__content">
-        {isMe &&
-          <IconRead isMe={isMe} isRead={true} />
-        }
+        {isMe && <IconRead isMe={isMe} isRead />}
         <div className="message__avatar">
-          <img className="avatar" src={avatar} alt={`Avatar ${user?.fullName}`} />
+          <img alt={`Avatar ${user?.fullName}`} className="avatar" src={avatar} />
         </div>
         <div className="message__info">
-          <div className="message__bubble">
-            <p className="message__text">{message}</p>
-          </div>
+          {(message || isTyping) && (
+            <div className="message__bubble">
+              {message && (
+                <p className="message__text">
+                  {reactStringReplace(message, /:(.+?):/g, (match, i) => (
+                    <EmojiPicker data={data} emoji={match} key={i} set="apple" size={16} />
+                  ))}
+                </p>
+              )}
+              {isTyping && (
+                <div className="message__typing">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              )}
+              {/* {false && <MessageAudio audioSrc={null} />} */}
+            </div>
+          )}
 
           {attachments && (
             <div className="message__attachments">
-              {attachments.map(item => renderAttachment(item))}
+              {attachments.map((item) => renderAttachment(item))}
             </div>
           )}
 

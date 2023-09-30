@@ -9,13 +9,7 @@ export const IconRead = ({ isMe, isRead }: IIconReadProps) => {
   if (!isMe) return null
 
   if (isRead) {
-    return (
-      <DoneAllIcon
-        className="message__icon-read"
-        sx={{ fontSize: 'small' }}
-      />
-
-    )
+    return <DoneAllIcon className="message__icon-read" sx={{ fontSize: 'small' }} />
   }
 
   return (

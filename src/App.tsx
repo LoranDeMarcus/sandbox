@@ -5,14 +5,13 @@ import { Auth } from '@/pages/Auth'
 import { Chat } from '@/pages/Chat'
 
 import './index.css'
-import { renderMultiRoutes } from '@/utils/renderMultiRoutes'
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <Routes>
-        <Route path="/*" element={<Auth />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route element={<Auth />} path="/*" />
+        <Route element={<Chat />} path="/chat" />
       </Routes>
     </div>
   )
