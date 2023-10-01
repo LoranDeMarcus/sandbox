@@ -1,18 +1,20 @@
+import { IAttachment } from '@/@types/message'
+
 export interface IUser {
   fullName?: string
 }
 
-interface IAttachment {
-  fileName: string
-  url: string
-}
-
 export interface IMessageProps {
   avatar: string
-  message: string
+  text: string
   date: string
   user: IUser
   isMe?: boolean
   attachments?: Array<IAttachment>
   isTyping?: boolean
+  setPreviewImage: (value: string) => void
+}
+
+export interface IMessageAudioProps {
+  audioSrc: string
 }

@@ -28,6 +28,7 @@
   },
   "include": [
     "src",
-    "./.eslintrc.js"
+    "./.eslintrc.js",
+    "icons.d.ts"
   ]
 }
